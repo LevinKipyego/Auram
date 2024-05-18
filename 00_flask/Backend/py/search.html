@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Bar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        #searchInput {
+            padding: 8px;
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+
+    .search-result {
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        
+    }
+        .highlight {
+            background-color: yellow;
+            font-family: "Quattrocento Sans", sans-serif;
+            font-weight: 700;
+            font-style: italic;
+
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="searchInput" placeholder="Search...">
+    <div id="searchResults"></div>
+
+    <div class="content">
+        <div class="section">
+            <h2>Section 1</h2>
+            <p>This is the content of section 1.</p>
+        </div>
+        <div class="section">
+            <h2>Section 2</h2>
+            <p>This is the content of section 2.</p>
+        </div>
+        <div class="section">
+            <h2>Section 3</h2>
+            <p>This is the content of section 3.</p>
+        </div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        const content = document.querySelector('.content');
+
+        // Function to perform search within sections
+        function search(query) {
+            const searchTerm = query.toLowerCase();
+            const sections = content.querySelectorAll('.section');
+
+            // Clear previous search results
+            searchResults.innerHTML = '';
+
+            // Iterate through sections and search for content
+            sections.forEach(section => {
+                const title = section.querySelector('h2').textContent;
+                const body = section.querySelector('p').textContent;
+                
+                if (title.toLowerCase().includes(searchTerm) || body.toLowerCase().includes(searchTerm)) {
+                    // Create a new element to display the highlighted search term
+                    const div = document.createElement('div');
+                    div.classList.add('search-result');
+                    const highlightedContent = body.replace(new RegExp(searchTerm, 'gi'), match => `<span class="highlight">${match}</span>`);
+                    div.innerHTML = `<h2>${title}</h2> <span><p>${highlightedContent}</span></p>`;
+                    searchResults.appendChild(div);
+                    
+                }
+            });
+        }
+
+        // Event listener for input change
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+            search(query);
+        });
+    </script>
+</body>
+</html>

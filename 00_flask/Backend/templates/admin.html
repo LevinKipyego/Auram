@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fancy Admin Table</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <!-- rimixicons -->
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+    rel="stylesheet" />
+                       
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    <style>
+        
+        
+        
+            
+        #user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-family: "Quattrocento Sans", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .update, .delete {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            line-height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-right: 5px;
+            text-decoration: none;
+        }
+
+        .update:hover, .delete:hover {
+            background-color: #0056b3;
+        }
+
+        #user-table th, #user-table td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dataTables_wrapper .dataTables_length, 
+        .dataTables_wrapper .dataTables_filter, 
+        .dataTables_wrapper .dataTables_info, 
+        .dataTables_wrapper .dataTables_paginate {
+            font-size: 14px;
+        }
+
+        .search-text{ color:blue;
+        }
+
+        .highlight {
+            background-color: yellow;
+        }
+
+        .icon {
+            cursor: pointer;
+            margin-right: 5px;
+            
+        }
+    
+        .edit-icon::before {
+            content: '\270E';
+        }
+    
+        .delete-icon::before {
+            content: '\2716';
+        }
+
+    </style>
+</head>
+<body>
+    <table id="user-table" class="display">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Nationality</th>
+                <th>Travel_time</th>
+                <th>time_to_spend</th>
+                <th>Specific_experience</th>
+                <th>Traveling_Adults</th>
+                <th>Traveling_Children</th>
+                <th>childrens_age</th>
+                <th>Comfort_Level</th>
+                <th>Travel_Preference</th>
+                <th>Message</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Table content will be loaded dynamically -->
+             <!-- Empty body -->
+            {% for user in selected_users %}
+
+            
+                <tr>
+                    <td>{{ user[0] }}</td>
+                    <td>{{ user[1] }}
+                        
+                        <a href='/admin/edit/{{ user[0]}}' ><i class="ri-edit-circle-fill" title = 'edit'></i></a>
+                        
+                        <a  href='/admin/delete/{{ user[0] }}' ><i class="ri-chat-delete-fill" title = 'delete'></i></a>
+                    </td>
+                    <td>{{ user[2] }}</td>
+                    <td>{{ user[3] }}</td>
+                    <td>{{ user[4] }}</td>
+                    <td>{{ user[5] }}</td>
+                    <td>{{ user[6] }}</td>
+                    <td>{{ user[7] }}</td>
+                    <td>{{ user[8] }}</td>
+                    <td>{{ user[9] }}</td>
+                    <td>{{ user[10] }}</td>
+                    <td>{{ user[11] }}</td>
+                    <td>{{ user[12] }}</td>
+                    <td>{{ user[13] }}</td>
+                    
+                </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+               // Customize DataTables search text
+               $.extend(true, $.fn.dataTable.defaults, {
+                language: {
+                    search: '<span class="search-text">Search:</span>'
+                }
+            });
+            // Initialize DataTables
+            $('#user-table').DataTable({
+                paging: true, // Enable pagination
+                searching: true, // Enable searching/filtering
+                ordering: true, // Enable sorting
+                order: [[0, 'asc']], // Default sorting by the first column in ascending order
+                scrollX: true, // Enable horizontal scrolling
+                fixedHeader: true, // Enable fixed headers
+                columnDefs: [{ targets: 'no-sort', orderable: false }] // Disable sorting for specific columns
+            });
+
+            table.on('draw.dt', function() {
+                var searchTerm = table.search();
+                if (searchTerm !== '') {
+                    var searchTermRegex = new RegExp('(' + searchTerm + ')', 'ig');
+                    table.cells().render('display').eq(0).each(function(index) {
+                        var cell = $(this);
+                        var content = cell.html();
+                        if (content.match(searchTermRegex)) {
+                            cell.html(content.replace(searchTermRegex, '<span class="highlight">$1</span>'));
+                        }
+                    });
+                }
+            });
+        });
+        
+    </script>
+</body>
+</html>
