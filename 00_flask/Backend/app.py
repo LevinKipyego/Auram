@@ -193,8 +193,8 @@ def user_details():
 
 
 # Email server configuration
-EMAIL_ADDRESS = 'levygesy123@gmail.com'
-EMAIL_PASSWORD = 'zkzj lagg afad cqza'
+EMAIL_ADDRESS = 'gmail.com'
+EMAIL_PASSWORD = ''
 SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
 
